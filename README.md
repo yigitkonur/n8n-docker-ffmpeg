@@ -105,3 +105,60 @@ docker-compose up -d
 - Ensure that the `caddy_config` directory and `Caddyfile` are correctly set up in your project directory.
 
 For more detailed instructions and troubleshooting, please refer to the official documentation of [Docker](https://docs.docker.com/) and [n8n](https://docs.n8n.io/).
+
+### Using n8n with ffmpeg
+
+With ffmpeg installed in your n8n Docker container, you can leverage the power of ffmpeg directly within your n8n workflows. This allows you to process media files as part of your automation sequences.
+
+#### Example: Convert MP4 to MP3
+
+In this example, we'll demonstrate how to use the Execute Command node in n8n to convert an MP4 video file to an MP3 audio file.
+
+1. **Add the Execute Command Node**
+
+   - Open your n8n editor and create a new workflow.
+   - Add an "Execute Command" node to your workflow.
+
+2. **Configure the Execute Command Node**
+
+   - Set the "Command" field to the ffmpeg command for converting MP4 to MP3.
+   - Example command:
+
+     ```bash
+     ffmpeg -i /files/input-video.mp4 -q:a 0 -map a /files/output-audio.mp3
+     ```
+
+   - Here's the detailed configuration:
+
+     - **Command**: `ffmpeg`
+     - **Parameters**: `-i /files/input-video.mp4 -q:a 0 -map a /files/output-audio.mp3`
+
+3. **Place Input File and Define Output Location**
+
+   - Ensure the input MP4 file (`input-video.mp4`) is placed in the `/files` directory within your n8n container.
+   - The converted MP3 file (`output-audio.mp3`) will be saved in the same directory.
+
+4. **Execute the Workflow**
+
+   - Execute the workflow to run the ffmpeg command.
+   - Check the `/files` directory for the newly created `output-audio.mp3` file.
+
+#### Detailed Steps
+
+1. **Place the Input File**: Copy your MP4 file to the `local_files` directory on your host machine, which maps to `/files` inside the n8n container.
+
+   ```bash
+   cp /path/to/your/input-video.mp4 /path/to/n8n-docker-ffmpeg/local_files/
+   ```
+
+2. **Create and Configure the Workflow**: Follow the steps above to create a workflow in n8n and configure the Execute Command node.
+
+3. **Run the Workflow**: Execute your workflow in n8n. After the workflow completes, you can find the converted MP3 file in the `local_files` directory.
+
+### Benefits
+
+- **Automation**: Automate media file conversions as part of larger workflows.
+- **Flexibility**: Use any ffmpeg command within n8n for various media processing tasks.
+- **Ease of Use**: Simplify media processing tasks without leaving your n8n environment.
+
+By following these steps, you can easily incorporate media processing into your n8n workflows, leveraging the powerful capabilities of ffmpeg directly within your automation sequences.
