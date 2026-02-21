@@ -1,0 +1,6 @@
+# local environment overrides — copy .env.example to .env and edit
+.env
+
+# runtime bind-mount directories
+caddy_config/
+local_files/
